@@ -2,5 +2,11 @@
   "name": "RPiTelegram",
   "app_id": "",
   "v2": true,
-  "typescript": true
+  "typescript": true,
+  "proxies": [
+    {
+      "path": "/indaba",
+      "proxyUrl": "http://85.86.165.252"
+    }  
+  ]
 }

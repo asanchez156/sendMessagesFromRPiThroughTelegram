@@ -14,19 +14,18 @@ class Data {
   templateUrl: 'messages.html'
 })
 export class MessagesPage {
-	data : Data;
-	private domain : string;
-	private toastMessage :string;
-	private response : { status: number, msg: string, user: string};
-	private names: Array<string>;
-	isDisabledSendBtn : boolean = true;
+  data : Data;
+  private domain : string;
+  private toastMessage :string;
+  private response : { status: number, msg: string, user: string, contacts: Array<string>};
+  private names: Array<string>;
+  isDisabledSendBtn : boolean = true;
 
   constructor(private alertCtrl: AlertController, private toastCtrl: ToastController, private http: Http) {
-  	this.data = new Data();
+    this.data = new Data();
     this.data.user = '';
     this.data.msg = '';
-    //this.domain = 'http://85.86.165.252/';
-    this.domain = 'http://echo.jsontest.com/status/0/user/Andoni/message/hola-que-tal/';
+    this.domain = 'http://85.86.165.252/indaba/';
     this.toastMessage = '';
     this.names = [ 'Andoni', 'Carla', 'Manolo_Zhan']; 
     this.http = http;
@@ -62,6 +61,10 @@ export class MessagesPage {
     prompt.present();
   }
 
+  selectUser(){
+    this.getContacts();
+  }
+
   setUser() {
     var options = {
       title: 'User',
@@ -71,7 +74,7 @@ export class MessagesPage {
         {
           text: 'Ok',
           handler: (data) => {
-          	this.data.user= data;
+            this.data.user= data;
           }
         }
       ]
@@ -87,65 +90,91 @@ export class MessagesPage {
   }
 
   ping () {
-  	this.http.get(this.domain)
+    this.http.get(this.domain)
+    //this.http.get('http://beta.json-generator.com/api/json/get/VJdqwj5gz')
         .subscribe(res => { 
-         	try{
-	         	this.response = res.json();
-	         	if (this.response.status ==0 ){
-	         		this.toastMessage = 'Connection available';
-	         		this.isDisabledSendBtn = false;
-	         		
-	         	}else{
-	         		this.toastMessage = 'Connection unavailable.';
-	         		this.isDisabledSendBtn = true;
-	         	}
-	         }catch (e){
-	         	this.toastMessage = 'Connection unavailable.';
-	         	this.isDisabledSendBtn = true;
-	         }
-         	this.presentToast();
+           try{
+             this.response = res.json();
+             if (this.response.status == 0){
+               this.toastMessage = 'Connection available';
+               this.isDisabledSendBtn = false;
+               
+             }else{
+               this.toastMessage = 'Connection unavailable.';
+               this.isDisabledSendBtn = true;
+             }
+           }catch (e){
+             this.toastMessage = 'Connection unavailable.';
+             this.isDisabledSendBtn = true;
+           }
+           this.presentToast();
         }, error => {
-            this.toastMessage = 'The server is down, try again later.';
+            this.toastMessage = error;
+            //this.toastMessage = 'The server is down, try again later.';
             this.isDisabledSendBtn = true;
             this.presentToast();
         });
    }
 
   sendMessage() {
-  	var data = JSON.stringify({user: this.data.user, msg: this.data.msg});
-	console.log(this.data); 
-  	this.http.post(this.domain, data)
+    var data = JSON.stringify({user: this.data.user, msg: this.data.msg});
+  console.log(this.data); 
+    this.http.post(this.domain + 'sendMessage.php', data)
+    //this.http.post('http://beta.json-generator.com/api/json/get/Vyfyujqez', data)
         .subscribe(res => { 
-         	try{
-         		this.response = res.json();
-         		if (this.response.status ==0 ){
-	         		this.toastMessage = 'The message was sent to ' + this.response.user + '.';
-	         		
-	         	}else{
-	         		this.toastMessage = 'Error, try again later.';
-	         	}
-         	} catch (e){
-         		this.toastMessage = 'Error, try again later.';
-         	}
-         	
-         	this.presentToast();
+           try{
+             this.response = res.json();
+             if (this.response.status ==0 ){
+               this.toastMessage = 'The message was sent to ' + this.response.user + '.';
+               
+             }else{
+               this.toastMessage = 'Error, try again later.';
+             }
+           } catch (e){
+             this.toastMessage = 'Error, try again later.';
+           }
+           
+           this.presentToast();
         }, error => {
             this.toastMessage = 'The server is down, try again later.';
             this.presentToast();
         });
-
   }
 
+   getContacts() {
+    //this.http.get(this.domain + 'getContacts.php')
+    this.http.get('http://beta.json-generator.com/api/json/get/Nke-OjclM')
+        .subscribe(res => { 
+           try{
+             this.response = res.json();
+             if (this.response.status ==0 ){
+                this.names = this.response.contacts;
+                this.toastMessage = "Contact list updated";
+                this.setUser();
+             }else{
+               this.toastMessage = 'Contact list can not be updated, try again later.';
+             }
+           } catch (e){
+             this.toastMessage = 'Error, try again later.';
+           }
+           this.presentToast();
+        }, error => {
+            this.toastMessage = 'The server is down, try again later.';
+            this.presentToast();
+        });
+  }
+
+
   presentToast() {
-	  let toast = this.toastCtrl.create({
-	    message: this.toastMessage,
-	    duration: 2000,
-	    position: 'bottom'
-	  });
-	  toast.onDidDismiss(() => {
-	    console.log('Dismissed toast');
-	  });
-	  toast.present();
+    let toast = this.toastCtrl.create({
+      message: this.toastMessage,
+      duration: 20000,
+      position: 'bottom'
+    });
+    toast.onDidDismiss(() => {
+      //console.log('Dismissed toast');
+    });
+    toast.present();
   }
 
 }
