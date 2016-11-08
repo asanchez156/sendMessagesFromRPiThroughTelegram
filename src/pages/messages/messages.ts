@@ -14,12 +14,12 @@ class Data {
   templateUrl: 'messages.html'
 })
 export class MessagesPage {
-	private data : Data;
+	data : Data;
 	private domain : string;
 	private toastMessage :string;
 	private response : { status: number, msg: string, user: string};
 	private names: Array<string>;
-	private isDisabledSendBtn : boolean = true;
+	isDisabledSendBtn : boolean = true;
 
   constructor(private alertCtrl: AlertController, private toastCtrl: ToastController, private http: Http) {
   	this.data = new Data();
