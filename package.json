@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "RPiMessageSender",
+  "author": "Andoni Sanchez Antolin",
+  "homepage": "http://asanchez.my-style.in",
   "private": true,
   "scripts": {
     "build": "ionic-app-scripts build",
@@ -33,7 +33,7 @@
     "@ionic/app-scripts": "0.0.39",
     "typescript": "2.0.6"
   },
-  "description": "myIonic2App: An Ionic project",
+  "description": "RPiMessageSender: An Ionic project",
   "cordovaPlugins": [
     "cordova-plugin-device",
     "cordova-plugin-console",

@@ -6,6 +6,27 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+	<button ion-button color="secondary" block (click)="setAddress()">Set server address</button>
+
+	
+	<ion-list>
+
+	  <ion-item (click)="setUser()">
+	    <ion-label floating>Username</ion-label>
+	    <ion-input type="text" name="user"[(ngModel)]="data.user"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label floating>Message</ion-label>
+	    <ion-textarea rows="3" name="msg"[(ngModel)]="data.msg"></ion-textarea>
+	  </ion-item>
+
+	</ion-list>
+	
+
+	<div>
+    	<button ion-button color="primary" [disabled]="isDisabledSendBtn" block (click)="sendMessage()">Send</button>
+  	</div>
  
 </ion-content>
