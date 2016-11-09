@@ -16,18 +16,16 @@ export class AboutPage {
  	}
 
  	openTwitter() {
-		let browser = new InAppBrowser('https://twitter.com/andonisanchezz', '_system');
-			//browser.close();
+    	open('https://twitter.com/andonisanchezz', "_system", "location=no");
+		//new InAppBrowser('https://twitter.com/andonisanchezz', '_system');
 	}
 
 	openGitHub() {
-		let browser = new InAppBrowser('http://asanchez.my-style.in/projects-es/', '_system');
-			//browser.close();
+		new InAppBrowser('http://asanchez.my-style.in/projects-es/', '_system');
 	}
 
 	openMySite() {
-		let browser = new InAppBrowser('https://github.com/asanchez156', '_system');
-			//browser.close();
+		new InAppBrowser('https://github.com/asanchez156', '_system');
 	}
 
 }

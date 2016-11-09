@@ -7,20 +7,20 @@
 </ion-header>
 
 <ion-content padding>
-	<button ion-button color="secondary" block (click)="setAddress()">Set server address</button>
+	<button ion-button color="secondary" block (click)="setAddress()">Connect</button>
 	<ion-list>
 	  <ion-item (click)="selectUser()">
 	    <ion-label floating>Username</ion-label>
-	    <ion-input type="text" name="user"[(ngModel)]="data.user"></ion-input>
+	    <ion-input [disabled]="true" type="text" name="user"[(ngModel)]="data.user"></ion-input>
 	  </ion-item>
 
 	  <ion-item>
 	    <ion-label floating>Message</ion-label>
-	    <ion-textarea rows="3" name="msg"[(ngModel)]="data.msg"></ion-textarea>
+	    <ion-textarea [disabled]="isDisabledField" rows="3" name="msg"[(ngModel)]="data.msg"></ion-textarea>
 	  </ion-item>
 	</ion-list>
 	<div>
-    	<button ion-button color="primary" [disabled]="isDisabledSendBtn" block (click)="sendMessage()">Send</button>
+    	<button ion-button color="primary" [disabled]="isDisabledField" block (click)="sendMessage()">Send</button>
   	</div>
- 
+
 </ion-content>
