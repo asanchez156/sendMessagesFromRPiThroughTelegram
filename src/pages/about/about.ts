@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 
-import {InAppBrowser} from 'ionic-native';
-
-
 import { NavController } from 'ionic-angular';
 
 @Component({
@@ -21,11 +18,11 @@ export class AboutPage {
 	}
 
 	openGitHub() {
-		new InAppBrowser('http://asanchez.my-style.in/projects-es/', '_system');
+		open('http://asanchez.my-style.in/projects-es/', '_system', "location=no");
 	}
 
 	openMySite() {
-		new InAppBrowser('https://github.com/asanchez156', '_system');
+		open('https://github.com/asanchez156', '_system', "location=no");
 	}
 
 }
