@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AlertController, ToastController } from 'ionic-angular';
+import { AlertController, ToastController, LoadingController } from 'ionic-angular';
 
 import { Http } from '@angular/http';
 
@@ -17,16 +17,25 @@ export class MessagesPage {
   data : Data;
   private domain : string;
   private toastMessage :string;
+
   private response : { 
       status: number, 
       msg: string, 
       user: string, 
       contacts: Array<string>
     };
+
   private names: Array<string>;
   isDisabledField : boolean = true;
 
-  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController, private http: Http) {
+  private loading;
+
+  constructor(
+    private alertCtrl: AlertController, 
+    private toastCtrl: ToastController, 
+    private http: Http,
+    public loadingCtrl: LoadingController
+    ) {
     this.data = new Data();
     this.data.user = '';
     this.data.msg = '';
@@ -107,13 +116,14 @@ export class MessagesPage {
   }
 
   ping () {
+    this.showLoading();
     this.http.get(this.domain)
     //this.http.get('http://beta.json-generator.com/api/json/get/VJdqwj5gz')
         .subscribe(res => { 
            try{
              this.response = res.json();
              if (this.response.status == 0){
-               this.toastMessage = 'Connection available';
+               this.toastMessage = 'Connection available.';
                this.enableSend();
              }else{
                this.toastMessage = 'Connection unavailable.';
@@ -123,27 +133,26 @@ export class MessagesPage {
              this.toastMessage = 'Connection unavailable.';
              this.disableSend();
            }
+           this.dismissLoading();
            this.presentToast();
         }, error => {
             //this.toastMessage = error;
             this.toastMessage = 'The server is down, try again later.';
-            this.disableSend();
+            this.disableSend();           
+            this.dismissLoading();
             this.presentToast();
         });
    }
 
   sendMessage() {
     if(this.data.user == ''  ){
-      this.toastMessage = 'Plese select and user';
+      this.toastMessage = 'Please select an user.';
       this.presentToast();
     }else if(this.data.msg ==''){
-      this.toastMessage = 'Please set a message';
+      this.toastMessage = 'Please set a message.';
       this.presentToast();
     }else{
-      this.isDisabledField = true;
-      this.toastMessage = 'Sending...';
-      this.presentToast();
-
+      this.showLoading();
       this.http.post(this.domain + 'sendMessage.php', JSON.stringify(this.data))
       //this.http.post('http://beta.json-generator.com/api/json/get/Vyfyujqez', data)
           .subscribe(res => { 
@@ -160,16 +169,19 @@ export class MessagesPage {
                this.disableSend();
                this.toastMessage = 'Error, try again later.';
              }
+             this.dismissLoading();
              this.presentToast();
           }, error => {
               this.disableSend();
               this.toastMessage = 'The server is down, try again later.';
+              this.dismissLoading();
               this.presentToast();
           });
        }
   }
 
    getContacts() {
+     this.showLoading();
     //this.http.get(this.domain + 'getContacts.php')
     this.http.get('http://beta.json-generator.com/api/json/get/Nke-OjclM')
         .subscribe(res => { 
@@ -177,29 +189,45 @@ export class MessagesPage {
              this.response = res.json();
              if (this.response.status == 0 ){
                 this.names = this.response.contacts;
-                this.toastMessage = "Contact list updated";
+                //this.toastMessage = "Contact list updated";
                 this.setUser();
              }else{
                this.disableSend();
                this.toastMessage = 'Contact list can not be updated, try again later.';
+               this.presentToast();
              }
            } catch (e){
              this.disableSend();
              this.toastMessage = 'Error, try again later.';
+             this.presentToast();
            }
-           this.presentToast();
+           this.dismissLoading();
         }, error => {
             this.disableSend();
             this.toastMessage = 'The server is down, try again later.';
+            this.dismissLoading();
             this.presentToast();
         });
+  }
+
+  showLoading(){
+      this.loading = this.loadingCtrl.create({
+        content: 'Please wait...'
+      });
+      this.loading.present();
+  }
+
+  dismissLoading(){
+      this.loading.dismiss();
   }
 
   presentToast() {
     let toast = this.toastCtrl.create({
       message: this.toastMessage,
-      duration: 4000,
-      position: 'bottom'
+      duration: 5000,
+      position: 'bottom',
+      showCloseButton: true,
+      closeButtonText: "Done"
     });
     toast.onDidDismiss(() => {
       //console.log('Dismissed toast');

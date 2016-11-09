@@ -13,16 +13,16 @@ export class AboutPage {
  	}
 
  	openTwitter() {
-    	open('https://twitter.com/andonisanchezz', "_system", "location=no");
+    	open('https://twitter.com/andonisanchezz', "_blanc", "location=no");
 		//new InAppBrowser('https://twitter.com/andonisanchezz', '_system');
 	}
 
-	openGitHub() {
-		open('http://asanchez.my-style.in/projects-es/', '_system', "location=no");
+	openMySite() {
+		open('http://asanchez.my-style.in/projects-es/', '_blanc', "location=no");
 	}
 
-	openMySite() {
-		open('https://github.com/asanchez156', '_system', "location=no");
+	openGitHub() {
+		open('https://github.com/asanchez156', '_blanc', "location=no");
 	}
 
 }
