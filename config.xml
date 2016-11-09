@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.myionic2app970959" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>RPiTelegramSender</name>
+<widget id="com.asanchez.rpitelegramsender" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>RPi Telegram Sender</name>
     <description>RPi Telegram message sender</description>
     <author email="andoni.sanchez.antolin@gmail.com" href="http://asanchez.my-style.in/">Asanchez</author>
     <content src="index.html" />
